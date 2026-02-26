@@ -55,7 +55,7 @@ export function Flashcard({ card, onSwipe }: FlashcardProps) {
   };
 
   return (
-    <div className="relative w-full aspect-[3/4] max-h-[600px] perspective-1000">
+    <div className="relative w-full max-w-md h-[75vh] max-h-[800px] perspective-1000 mx-auto">
       <motion.div
         className="w-full h-full transform-style-3d cursor-grab active:cursor-grabbing"
         drag={isFlipped ? true : false}
@@ -72,23 +72,33 @@ export function Flashcard({ card, onSwipe }: FlashcardProps) {
         >
           {/* FRONT FACE */}
           <div 
-            className="absolute inset-0 backface-hidden bg-card rounded-[2rem] p-8 flex flex-col items-center justify-center text-center"
+            className="absolute inset-0 backface-hidden bg-card rounded-[2rem] p-6 flex flex-col items-center text-center"
             onClick={() => !isFlipped && setIsFlipped(true)}
           >
-            <span className="text-sm font-medium text-muted-foreground absolute top-6">Tap to flip</span>
-            <h2 className="text-3xl font-display font-semibold text-card-foreground">
-              {card.front}
-            </h2>
+            <span className="text-sm font-medium text-muted-foreground shrink-0 mb-4 mt-2">Tap to flip</span>
+            <div className="flex-1 w-full overflow-y-auto flex items-center justify-center pb-4">
+              <h2 
+                className="font-display font-semibold text-card-foreground break-words w-full"
+                style={{ fontSize: `${Math.max(20, Math.min(36, 350 / Math.max(1, card.front.length)))}px`, lineHeight: 1.4 }}
+              >
+                {card.front}
+              </h2>
+            </div>
           </div>
 
           {/* BACK FACE */}
           <motion.div 
-            className="absolute inset-0 backface-hidden bg-card rounded-[2rem] p-8 flex flex-col items-center justify-center text-center rotate-y-180 overflow-hidden"
+            className="absolute inset-0 backface-hidden bg-card rounded-[2rem] p-6 flex flex-col items-center text-center rotate-y-180 overflow-hidden"
             style={{ backgroundColor }}
           >
-            <h3 className="text-2xl font-display font-medium text-card-foreground whitespace-pre-wrap">
-              {card.back}
-            </h3>
+            <div className="flex-1 w-full overflow-y-auto flex items-center justify-center mt-4 mb-16">
+              <h3 
+                className="font-display font-medium text-card-foreground whitespace-pre-wrap break-words w-full"
+                style={{ fontSize: `${Math.max(16, Math.min(28, 400 / Math.max(1, card.back.length)))}px`, lineHeight: 1.5 }}
+              >
+                {card.back}
+              </h3>
+            </div>
             
             {/* Swipe Indicators */}
             <div className="absolute inset-0 pointer-events-none p-6 flex flex-col justify-between opacity-0 transition-opacity duration-200"

@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { Moon, Sun, Info, Key } from "lucide-react";
+import { Moon, Sun, Info, Key, RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Settings() {
@@ -13,6 +13,7 @@ export default function Settings() {
   const [promptCase, setPromptCase] = useState("你是法学/知识解释专家，用典型案例帮助用户理解这个知识点的具体含义和应用。正面：{front}，核心答案：{back}，请举1-2个生动案例说明，不要直接复述答案。");
   const [promptMemory, setPromptMemory] = useState("你是记忆 method 专家，用口诀、联想故事、拆解技巧帮助用户记住这个知识点。正面：{front}，核心答案：{back}，生成有趣的记忆方法。");
   const [isConfigured, setIsConfigured] = useState(false);
+  const [vibrationEnabled, setVibrationEnabled] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -29,6 +30,11 @@ export default function Settings() {
     if (savedPromptCase) setPromptCase(savedPromptCase);
     const savedPromptMemory = localStorage.getItem('prompt_memory');
     if (savedPromptMemory) setPromptMemory(savedPromptMemory);
+
+    const savedVibration = localStorage.getItem('vibration_enabled');
+    if (savedVibration !== null) {
+      setVibrationEnabled(savedVibration === 'true');
+    }
   }, []);
 
   const toggleTheme = (checked: boolean) => {
@@ -38,6 +44,11 @@ export default function Settings() {
     } else {
       document.documentElement.classList.remove('dark');
     }
+  };
+
+  const toggleVibration = (checked: boolean) => {
+    setVibrationEnabled(checked);
+    localStorage.setItem('vibration_enabled', checked.toString());
   };
 
   const handleSaveConfig = () => {
@@ -123,8 +134,8 @@ export default function Settings() {
           </section>
 
           <section>
-            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3 ml-2">外观</h2>
-            <div className="bg-card border border-border/50 rounded-2xl p-1 shadow-sm">
+            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3 ml-2">外观与交互</h2>
+            <div className="bg-card border border-border/50 rounded-2xl p-1 shadow-sm space-y-1">
               <div className="flex items-center justify-between p-3">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-secondary rounded-lg">
@@ -136,6 +147,20 @@ export default function Settings() {
                   id="dark-mode" 
                   checked={isDark} 
                   onCheckedChange={toggleTheme} 
+                />
+              </div>
+
+              <div className="flex items-center justify-between p-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-secondary rounded-lg">
+                    <RefreshCw className="w-5 h-5 text-foreground" />
+                  </div>
+                  <Label htmlFor="vibration-mode" className="text-base cursor-pointer">滑动震动反馈</Label>
+                </div>
+                <Switch 
+                  id="vibration-mode" 
+                  checked={vibrationEnabled} 
+                  onCheckedChange={toggleVibration} 
                 />
               </div>
             </div>

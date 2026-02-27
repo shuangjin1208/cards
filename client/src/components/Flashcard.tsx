@@ -45,6 +45,9 @@ export function Flashcard({ card, onSwipe }: FlashcardProps) {
     const threshold = 50; // Further reduced threshold for easier triggering
     const velocityThreshold = 200; // Further reduced velocity threshold
     
+    // Check vibration setting
+    const vibrationEnabled = localStorage.getItem('vibration_enabled') !== 'false';
+
     // Calculate which direction is dominant
     const isHorizontal = Math.abs(info.offset.x) > Math.abs(info.offset.y);
     
@@ -52,13 +55,13 @@ export function Flashcard({ card, onSwipe }: FlashcardProps) {
       // Horizontal swipes (Left/Right)
       if (info.offset.x < -threshold || info.velocity.x < -velocityThreshold) {
         // Swipe Left -> Easy (简单)
-        if (window.navigator.vibrate) window.navigator.vibrate(10);
+        if (vibrationEnabled && window.navigator.vibrate) window.navigator.vibrate(10);
         await controls.start({ x: -500, opacity: 0, transition: { duration: 0.2, ease: "easeOut" } });
         onSwipe("left", card);
         return;
       } else if (info.offset.x > threshold || info.velocity.x > velocityThreshold) {
         // Swipe Right -> Again (重来)
-        if (window.navigator.vibrate) window.navigator.vibrate(10);
+        if (vibrationEnabled && window.navigator.vibrate) window.navigator.vibrate(10);
         // Animate out to the right
         await controls.start({ x: 500, opacity: 0, transition: { duration: 0.2, ease: "easeOut" } });
         onSwipe("right", card);
@@ -68,7 +71,7 @@ export function Flashcard({ card, onSwipe }: FlashcardProps) {
       // Vertical swipes (Up/Down)
       if (info.offset.y < -threshold || info.velocity.y < -velocityThreshold) {
         // Swipe Up -> Good (掌握)
-        if (window.navigator.vibrate) window.navigator.vibrate(15);
+        if (vibrationEnabled && window.navigator.vibrate) window.navigator.vibrate(15);
         // Animate out upwards
         await controls.start({ y: -500, opacity: 0, transition: { duration: 0.2, ease: "easeOut" } });
         onSwipe("up", card);

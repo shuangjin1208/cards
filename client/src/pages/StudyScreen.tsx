@@ -10,9 +10,10 @@ import { X, Trophy, Send, Sparkles, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@shared/schema";
 import confetti from "canvas-confetti";
+import { useToast } from "@/hooks/use-toast";
 
 interface Message {
-  role: "user" | "ai";
+  role: "system" | "user" | "assistant";
   content: string;
 }
 
@@ -20,6 +21,7 @@ export default function StudyScreen() {
   const [, setLocation] = useLocation();
   const { id } = useParams();
   const deckId = parseInt(id || "0");
+  const { toast } = useToast();
   
   const { data: deck } = useDeck(deckId);
   const { data: allCards, isLoading: cardsLoading } = useCards(deckId);
@@ -119,28 +121,82 @@ export default function StudyScreen() {
     }
   };
 
-  const triggerAi = (type: "analyze" | "memory") => {
+  const callDeepSeek = async (msgs: Message[]) => {
+    const apiKey = localStorage.getItem('deepseek_api_key');
+    if (!apiKey) {
+      toast({
+        title: "未配置 API Key",
+        description: "请在设置页配置 DeepSeek API Key",
+        variant: "destructive",
+      });
+      setAiActive(false);
+      return;
+    }
+
     setAiLoading(true);
-    setTimeout(() => {
+    try {
+      const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model: 'deepseek-chat',
+          messages: msgs,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('API 调用失败');
+      }
+
+      const data = await response.json();
+      const aiResponse = data.choices[0].message.content;
+      setMessages(prev => [...prev, { role: "assistant", content: aiResponse }]);
+    } catch (error) {
+      toast({
+        title: "错误",
+        description: "无法连接到 DeepSeek 服务，请检查 API Key 或网络。",
+        variant: "destructive",
+      });
+    } finally {
       setAiLoading(false);
-      const response = type === "analyze" 
-        ? `这是关于“${queue[0].front}”的深度解析。这个词常用于...` 
-        : `为了帮你记住“${queue[0].front}”，你可以联想...`;
-      setMessages([{ role: "ai", content: response }]);
-    }, 3000);
+    }
+  };
+
+  const triggerAi = (type: "analyze" | "memory") => {
+    const currentCard = queue[0];
+    if (!currentCard) return;
+
+    let systemPrompt = "";
+    if (type === "analyze") {
+      systemPrompt = localStorage.getItem('prompt_case') || "你是法学/知识解释专家，用典型案例帮助用户理解这个知识点的具体含义和应用。正面：{front}，核心答案：{back}，请举1-2个生动案例说明，不要直接复述答案。";
+    } else {
+      systemPrompt = localStorage.getItem('prompt_memory') || "你是记忆方法专家，用口诀、联想故事、拆解技巧帮助用户记住这个知识点。正面：{front}，核心答案：{back}，生成有趣的记忆方法。";
+    }
+
+    // Replace placeholders
+    systemPrompt = systemPrompt
+      .replace(/{front}/g, currentCard.front)
+      .replace(/{back}/g, currentCard.back || "");
+
+    const initialMessages: Message[] = [
+      { role: "system", content: systemPrompt }
+    ];
+    setMessages(initialMessages);
+    callDeepSeek(initialMessages);
   };
 
   const handleSendMessage = () => {
-    if (!inputValue.trim()) return;
-    const userMsg = inputValue;
-    setMessages(prev => [...prev, { role: "user", content: userMsg }]);
-    setInputValue("");
-    setAiLoading(true);
+    if (!inputValue.trim() || aiLoading) return;
     
-    setTimeout(() => {
-      setAiLoading(false);
-      setMessages(prev => [...prev, { role: "ai", content: `针对你问的“${userMsg}”，我的回答是：这是一个模拟的AI追问回复。` }]);
-    }, 2000);
+    const newUserMsg: Message = { role: "user", content: inputValue };
+    const nextMessages = [...messages, newUserMsg];
+    
+    setMessages(nextMessages);
+    setInputValue("");
+    callDeepSeek(nextMessages);
   };
 
   const triggerConfetti = () => {
@@ -256,7 +312,7 @@ export default function StudyScreen() {
               ) : (
                 <div className="flex flex-col h-full overflow-hidden">
                   <div className="flex-1 overflow-y-auto mb-4 pr-2 space-y-4 min-h-[100px]">
-                    {messages.map((msg, i) => (
+                    {messages.filter(m => m.role !== 'system').map((msg, i) => (
                       <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                         <div className={`max-w-[85%] px-4 py-2 rounded-2xl text-sm ${
                           msg.role === 'user' 

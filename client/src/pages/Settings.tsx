@@ -10,6 +10,8 @@ import { useToast } from "@/hooks/use-toast";
 export default function Settings() {
   const [isDark, setIsDark] = useState(false);
   const [apiKey, setApiKey] = useState("");
+  const [promptCase, setPromptCase] = useState("你是法学/知识解释专家，用典型案例帮助用户理解这个知识点的具体含义和应用。正面：{front}，核心答案：{back}，请举1-2个生动案例说明，不要直接复述答案。");
+  const [promptMemory, setPromptMemory] = useState("你是记忆 method 专家，用口诀、联想故事、拆解技巧帮助用户记住这个知识点。正面：{front}，核心答案：{back}，生成有趣的记忆方法。");
   const [isConfigured, setIsConfigured] = useState(false);
   const { toast } = useToast();
 
@@ -17,12 +19,16 @@ export default function Settings() {
     // Check initial theme state
     setIsDark(document.documentElement.classList.contains('dark'));
     
-    // Load DeepSeek API Key
+    // Load DeepSeek API Key and Prompts
     const savedKey = localStorage.getItem('deepseek_api_key');
     if (savedKey) {
       setApiKey(savedKey);
       setIsConfigured(true);
     }
+    const savedPromptCase = localStorage.getItem('prompt_case');
+    if (savedPromptCase) setPromptCase(savedPromptCase);
+    const savedPromptMemory = localStorage.getItem('prompt_memory');
+    if (savedPromptMemory) setPromptMemory(savedPromptMemory);
   }, []);
 
   const toggleTheme = (checked: boolean) => {
@@ -34,22 +40,22 @@ export default function Settings() {
     }
   };
 
-  const handleSaveKey = () => {
+  const handleSaveConfig = () => {
     if (apiKey.trim()) {
       localStorage.setItem('deepseek_api_key', apiKey);
       setIsConfigured(true);
-      toast({
-        title: "保存成功",
-        description: "DeepSeek API Key 已安全存储。",
-      });
     } else {
       localStorage.removeItem('deepseek_api_key');
       setIsConfigured(false);
-      toast({
-        title: "已清除",
-        description: "API Key 已从存储中移除。",
-      });
     }
+    
+    localStorage.setItem('prompt_case', promptCase);
+    localStorage.setItem('prompt_memory', promptMemory);
+
+    toast({
+      title: "保存成功",
+      description: "配置已更新。",
+    });
   };
 
   return (
@@ -60,7 +66,7 @@ export default function Settings() {
         <div className="space-y-8 flex-1">
           <section>
             <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3 ml-2">DeepSeek AI 配置</h2>
-            <div className="bg-card border border-border/50 rounded-2xl p-4 shadow-sm space-y-4">
+            <div className="bg-card border border-border/50 rounded-2xl p-4 shadow-sm space-y-6">
               <div className="space-y-2">
                 <div className="flex items-center gap-2 mb-1">
                   <Key className="w-4 h-4 text-primary" />
@@ -75,6 +81,25 @@ export default function Settings() {
                   className="bg-secondary/30 border-border/50 focus-visible:ring-primary"
                 />
               </div>
+
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">案例分析自定义提示词</Label>
+                <Input
+                  value={promptCase}
+                  onChange={(e) => setPromptCase(e.target.value)}
+                  className="bg-secondary/30 border-border/50"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">辅助记忆自定义提示词</Label>
+                <Input
+                  value={promptMemory}
+                  onChange={(e) => setPromptMemory(e.target.value)}
+                  className="bg-secondary/30 border-border/50"
+                />
+              </div>
+
               <div className="flex items-center justify-between pt-2">
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-muted-foreground">状态:</span>
@@ -90,8 +115,8 @@ export default function Settings() {
                     </span>
                   )}
                 </div>
-                <Button onClick={handleSaveKey} size="sm" className="rounded-xl px-4">
-                  保存 Key
+                <Button onClick={handleSaveConfig} size="sm" className="rounded-xl px-4">
+                  保存配置
                 </Button>
               </div>
             </div>

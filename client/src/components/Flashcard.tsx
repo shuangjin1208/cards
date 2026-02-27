@@ -42,28 +42,37 @@ export function Flashcard({ card, onSwipe }: FlashcardProps) {
   );
 
   const handleDragEnd = async (e: any, info: PanInfo) => {
-    const threshold = 100;
-    const velocityThreshold = 500;
+    const threshold = 80; // 降低阈值，更容易触发
+    const velocityThreshold = 300; // 降低速度阈值
     
-    if (info.offset.x < -threshold || info.velocity.x < -velocityThreshold) {
-      // Swipe Left -> Easy (简单)
-      if (window.navigator.vibrate) window.navigator.vibrate(10);
-      await controls.start({ x: -500, opacity: 0, transition: { duration: 0.2, ease: "easeOut" } });
-      onSwipe("left", card);
-    } else if (info.offset.x > threshold || info.velocity.x > velocityThreshold) {
-      // Swipe Right -> Again (重来)
-      if (window.navigator.vibrate) window.navigator.vibrate(10);
-      setIsFlipped(true);
-      onSwipe("right", card);
-    } else if (info.offset.y < -threshold || info.velocity.y < -velocityThreshold) {
-      // Swipe Up -> Good (掌握)
-      if (window.navigator.vibrate) window.navigator.vibrate(15);
-      setIsFlipped(true);
-      onSwipe("up", card);
+    // 优先判断水平滑动
+    if (Math.abs(info.offset.x) > Math.abs(info.offset.y)) {
+      if (info.offset.x < -threshold || info.velocity.x < -velocityThreshold) {
+        // Swipe Left -> Easy (简单)
+        if (window.navigator.vibrate) window.navigator.vibrate(10);
+        await controls.start({ x: -500, opacity: 0, transition: { duration: 0.2, ease: "easeOut" } });
+        onSwipe("left", card);
+        return;
+      } else if (info.offset.x > threshold || info.velocity.x > velocityThreshold) {
+        // Swipe Right -> Again (重来)
+        if (window.navigator.vibrate) window.navigator.vibrate(10);
+        setIsFlipped(true);
+        onSwipe("right", card);
+        return;
+      }
     } else {
-      // Return to center
-      controls.start({ x: 0, y: 0, transition: { type: "spring", stiffness: 400, damping: 25 } });
+      // 判断垂直滑动
+      if (info.offset.y < -threshold || info.velocity.y < -velocityThreshold) {
+        // Swipe Up -> Good (掌握)
+        if (window.navigator.vibrate) window.navigator.vibrate(15);
+        setIsFlipped(true);
+        onSwipe("up", card);
+        return;
+      }
     }
+
+    // 未达阈值，回归中心
+    controls.start({ x: 0, y: 0, transition: { type: "spring", stiffness: 400, damping: 25 } });
   };
 
   return (
@@ -72,7 +81,7 @@ export function Flashcard({ card, onSwipe }: FlashcardProps) {
         className="w-full h-full transform-style-3d cursor-grab active:cursor-grabbing touch-none"
         drag={!isFlipped}
         dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-        dragElastic={0.8}
+        dragElastic={0.6} // 稍微降低弹性，增加确定感
         onDragEnd={handleDragEnd}
         style={{ x, y, rotate, opacity }}
         animate={controls}

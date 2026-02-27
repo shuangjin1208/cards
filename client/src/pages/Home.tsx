@@ -32,16 +32,18 @@ export default function Home() {
           <p className="text-muted-foreground mt-1">记录你的学习旅程</p>
         </motion.header>
 
-        <div className="flex-1 flex flex-col items-center justify-center -mt-10">
+        <div className="flex-1 flex flex-col items-center justify-center -mt-10 w-full">
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.1, duration: 0.5 }}
+            className="w-full flex items-center justify-center"
           >
             <ProgressRing 
               progress={progress} 
               label={`${progress}%`} 
               subLabel="已掌握" 
+              size={Math.min(window.innerWidth * 0.7, 300)}
             />
           </motion.div>
           

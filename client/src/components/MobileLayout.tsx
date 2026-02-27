@@ -6,16 +6,16 @@ export function MobileLayout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
 
   return (
-    <div className="mobile-app-container">
-      <main className="flex-1 overflow-y-auto no-scrollbar pb-20">
+    <div className="mobile-app-container w-full min-h-screen">
+      <main className="flex-1 w-full overflow-y-auto no-scrollbar pb-20 pt-safe px-safe">
         {children}
       </main>
       
       {/* Bottom Navigation */}
-      <nav className="absolute bottom-0 w-full bg-background/80 backdrop-blur-xl border-t border-border z-50 px-6 py-4 flex justify-between items-center pb-safe">
-        <NavItem href="/" icon={<Home className="w-6 h-6" />} label="Home" active={location === "/"} />
-        <NavItem href="/decks" icon={<Folder className="w-6 h-6" />} label="Decks" active={location.startsWith("/decks")} />
-        <NavItem href="/settings" icon={<SettingsIcon className="w-6 h-6" />} label="Settings" active={location === "/settings"} />
+      <nav className="fixed bottom-0 left-0 right-0 sm:absolute w-full bg-background/80 backdrop-blur-xl border-t border-border z-50 px-6 py-4 flex justify-between items-center pb-safe">
+        <NavItem href="/" icon={<Home className="w-6 h-6" />} label="首页" active={location === "/"} />
+        <NavItem href="/decks" icon={<Folder className="w-6 h-6" />} label="卡组" active={location.startsWith("/decks")} />
+        <NavItem href="/settings" icon={<SettingsIcon className="w-6 h-6" />} label="设置" active={location === "/settings"} />
       </nav>
     </div>
   );

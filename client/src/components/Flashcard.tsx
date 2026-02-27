@@ -55,7 +55,7 @@ export function Flashcard({ card, onSwipe }: FlashcardProps) {
   };
 
   return (
-    <div className="relative w-[90vw] h-[75vh] max-h-[800px] perspective-1000 mx-auto">
+    <div className="relative w-[90vw] max-w-[500px] h-[70vh] max-h-[700px] perspective-1000 mx-auto">
       <motion.div
         className="w-full h-full transform-style-3d cursor-grab active:cursor-grabbing"
         drag={isFlipped ? true : false}
@@ -76,11 +76,11 @@ export function Flashcard({ card, onSwipe }: FlashcardProps) {
             onClick={() => !isFlipped && setIsFlipped(true)}
           >
             <span className="text-sm font-medium text-muted-foreground shrink-0 mb-2 mt-4">点击翻面</span>
-            <div className="flex-1 w-full overflow-y-auto flex flex-col p-5">
-              <div className="flex-1 flex items-center justify-center">
+            <div className="flex-1 w-full overflow-y-auto">
+              <div className="min-h-full flex items-center justify-center p-6">
                 <h2 
                   className="font-display font-semibold text-card-foreground break-words w-full"
-                  style={{ fontSize: `24px`, lineHeight: 1.5 }}
+                  style={{ fontSize: `24px`, lineHeight: 1.6 }}
                 >
                   {card.front}
                 </h2>
@@ -93,11 +93,11 @@ export function Flashcard({ card, onSwipe }: FlashcardProps) {
             className="absolute inset-0 backface-hidden bg-card dark:bg-zinc-800 rounded-[2rem] p-0 flex flex-col items-center text-center rotate-y-180 overflow-hidden"
             style={{ backgroundColor }}
           >
-            <div className="flex-1 w-full overflow-y-auto flex flex-col p-5 mt-4 mb-16">
-              <div className="flex-1 flex items-center justify-center">
+            <div className="flex-1 w-full overflow-y-auto mt-4 mb-16">
+              <div className="min-h-full flex items-center justify-center p-6">
                 <h3 
                   className="font-display font-medium text-card-foreground whitespace-pre-wrap break-words w-full"
-                  style={{ fontSize: `20px`, lineHeight: 1.5 }}
+                  style={{ fontSize: `20px`, lineHeight: 1.6 }}
                 >
                   {card.back}
                 </h3>

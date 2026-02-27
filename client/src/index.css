@@ -94,8 +94,8 @@
 
 /* App Container for Desktop */
 .mobile-app-container {
-  @apply mx-auto max-w-[480px] h-[100dvh] bg-background relative overflow-hidden flex flex-col;
-  @apply sm:border-x sm:border-border sm:shadow-2xl sm:h-screen;
+  @apply w-full h-[100dvh] bg-background relative overflow-hidden flex flex-col;
+  @apply sm:mx-auto sm:max-w-[480px] sm:border-x sm:border-border sm:shadow-2xl sm:h-screen;
 }
 
 /* Hide scrollbar for a cleaner look but keep functionality */

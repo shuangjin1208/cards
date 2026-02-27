@@ -20,9 +20,9 @@ export function ProgressRing({
   const offset = circumference - (progress / 100) * circumference;
 
   return (
-    <div className="relative flex items-center justify-center" style={{ width: size, height: size }}>
+    <div className="relative flex items-center justify-center max-w-[80vw] aspect-square" style={{ width: size, height: size }}>
       {/* Background Track */}
-      <svg className="absolute transform -rotate-90" width={size} height={size}>
+      <svg className="absolute transform -rotate-90 w-full h-full" viewBox={`0 0 ${size} ${size}`}>
         <circle
           className="text-muted stroke-current"
           strokeWidth={strokeWidth}

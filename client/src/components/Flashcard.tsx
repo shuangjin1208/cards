@@ -79,9 +79,9 @@ export function Flashcard({ card, onSwipe }: FlashcardProps) {
     <div className="relative w-full max-w-[500px] h-[60vh] max-h-[600px] perspective-1000 mx-auto flex flex-col items-center">
       <motion.div
         className="w-full h-full transform-style-3d cursor-grab active:cursor-grabbing touch-none"
-        drag={!isFlipped}
+        drag
         dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-        dragElastic={0.6} // 稍微降低弹性，增加确定感
+        dragElastic={0.7}
         onDragEnd={handleDragEnd}
         style={{ x, y, rotate, opacity }}
         animate={controls}

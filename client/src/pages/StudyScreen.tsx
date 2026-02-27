@@ -53,14 +53,10 @@ export default function StudyScreen() {
 
     if (session && session.state) {
       const state = session.state as any;
-      if (confirm("是否恢复上次的学习进度？")) {
-        setQueue(state.queue || []);
-        setStats(state.stats || { easy: 0, good: 0, again: 0 });
-        setInitialized(true);
-        return;
-      } else {
-        deleteSession.mutate(deckId);
-      }
+      setQueue(state.queue || []);
+      setStats(state.stats || { easy: 0, good: 0, again: 0 });
+      setInitialized(true);
+      return;
     }
 
     const freshQueue = [...allCards].sort(() => Math.random() - 0.5);

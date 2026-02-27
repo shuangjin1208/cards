@@ -1,12 +1,28 @@
 { 
   "expo": {
+    "name": "Rest Express",
+    "slug": "rest-express",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./client/src/assets/logo.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.kakak"
+    },
     "extra": {
       "eas": {
         "projectId": "41abc447-075b-459b-9fd9-592ba96ba3ba"
       }
-    },
-    "android": {
-      "package": "com.kakak"
     },
     "runtimeVersion": {
       "policy": "appVersion"
@@ -14,6 +30,8 @@
     "updates": {
       "url": "https://u.expo.dev/41abc447-075b-459b-9fd9-592ba96ba3ba"
     },
-    "ios": {}
+    "ios": {
+      "supportsTablet": true
+    }
   }
 }

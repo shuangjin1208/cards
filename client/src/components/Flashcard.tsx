@@ -55,7 +55,7 @@ export function Flashcard({ card, onSwipe }: FlashcardProps) {
   };
 
   return (
-    <div className="relative w-full max-w-md h-[75vh] max-h-[800px] perspective-1000 mx-auto">
+    <div className="relative w-[90vw] h-[75vh] max-h-[800px] perspective-1000 mx-auto">
       <motion.div
         className="w-full h-full transform-style-3d cursor-grab active:cursor-grabbing"
         drag={isFlipped ? true : false}
@@ -72,58 +72,62 @@ export function Flashcard({ card, onSwipe }: FlashcardProps) {
         >
           {/* FRONT FACE */}
           <div 
-            className="absolute inset-0 backface-hidden bg-card rounded-[2rem] p-6 flex flex-col items-center text-center"
+            className="absolute inset-0 backface-hidden bg-card dark:bg-zinc-800 rounded-[2rem] p-0 flex flex-col items-center text-center overflow-hidden"
             onClick={() => !isFlipped && setIsFlipped(true)}
           >
-            <span className="text-sm font-medium text-muted-foreground shrink-0 mb-4 mt-2">Tap to flip</span>
-            <div className="flex-1 w-full overflow-y-auto flex items-center justify-center pb-4">
-              <h2 
-                className="font-display font-semibold text-card-foreground break-words w-full"
-                style={{ fontSize: `${Math.max(20, Math.min(36, 350 / Math.max(1, card.front.length)))}px`, lineHeight: 1.4 }}
-              >
-                {card.front}
-              </h2>
+            <span className="text-sm font-medium text-muted-foreground shrink-0 mb-2 mt-4">点击翻面</span>
+            <div className="flex-1 w-full overflow-y-auto flex flex-col p-5">
+              <div className="flex-1 flex items-center justify-center">
+                <h2 
+                  className="font-display font-semibold text-card-foreground break-words w-full"
+                  style={{ fontSize: `24px`, lineHeight: 1.5 }}
+                >
+                  {card.front}
+                </h2>
+              </div>
             </div>
           </div>
 
           {/* BACK FACE */}
           <motion.div 
-            className="absolute inset-0 backface-hidden bg-card rounded-[2rem] p-6 flex flex-col items-center text-center rotate-y-180 overflow-hidden"
+            className="absolute inset-0 backface-hidden bg-card dark:bg-zinc-800 rounded-[2rem] p-0 flex flex-col items-center text-center rotate-y-180 overflow-hidden"
             style={{ backgroundColor }}
           >
-            <div className="flex-1 w-full overflow-y-auto flex items-center justify-center mt-4 mb-16">
-              <h3 
-                className="font-display font-medium text-card-foreground whitespace-pre-wrap break-words w-full"
-                style={{ fontSize: `${Math.max(16, Math.min(28, 400 / Math.max(1, card.back.length)))}px`, lineHeight: 1.5 }}
-              >
-                {card.back}
-              </h3>
+            <div className="flex-1 w-full overflow-y-auto flex flex-col p-5 mt-4 mb-16">
+              <div className="flex-1 flex items-center justify-center">
+                <h3 
+                  className="font-display font-medium text-card-foreground whitespace-pre-wrap break-words w-full"
+                  style={{ fontSize: `20px`, lineHeight: 1.5 }}
+                >
+                  {card.back}
+                </h3>
+              </div>
             </div>
             
             {/* Swipe Indicators */}
             <div className="absolute inset-0 pointer-events-none p-6 flex flex-col justify-between opacity-0 transition-opacity duration-200"
                  style={{ opacity: useTransform(x, [-50, -100], [0, 1]) as any }}>
               <div className="flex justify-start">
-                <div className="border-4 border-green-500 text-green-500 font-bold text-2xl px-4 py-1 rounded-xl rotate-[-15deg]">EASY</div>
+                <div className="border-4 border-green-500 text-green-500 font-bold text-2xl px-4 py-1 rounded-xl rotate-[-15deg]">简单</div>
               </div>
             </div>
             
             <div className="absolute inset-0 pointer-events-none p-6 flex flex-col justify-between opacity-0 transition-opacity duration-200"
                  style={{ opacity: useTransform(x, [50, 100], [0, 1]) as any }}>
               <div className="flex justify-end">
-                <div className="border-4 border-red-500 text-red-500 font-bold text-2xl px-4 py-1 rounded-xl rotate-[15deg]">AGAIN</div>
+                <div className="border-4 border-red-500 text-red-500 font-bold text-2xl px-4 py-1 rounded-xl rotate-[15deg]">重来</div>
               </div>
             </div>
             
             <div className="absolute inset-0 pointer-events-none p-6 flex flex-col justify-end items-center opacity-0 transition-opacity duration-200"
                  style={{ opacity: useTransform(y, [-50, -100], [0, 1]) as any }}>
-              <div className="border-4 border-yellow-500 text-yellow-500 font-bold text-2xl px-4 py-1 rounded-xl">GOOD</div>
+              <div className="border-4 border-yellow-500 text-yellow-500 font-bold text-2xl px-4 py-1 rounded-xl">掌握</div>
             </div>
 
             <div className="absolute bottom-8 flex gap-6 text-muted-foreground opacity-50">
-              <div className="flex flex-col items-center"><CheckCircle2 className="w-6 h-6 mb-1"/> <span className="text-[10px]">Easy</span></div>
-              <div className="flex flex-col items-center"><RefreshCw className="w-6 h-6 mb-1"/> <span className="text-[10px]">Good</span></div>
-              <div className="flex flex-col items-center"><XCircle className="w-6 h-6 mb-1"/> <span className="text-[10px]">Again</span></div>
+              <div className="flex flex-col items-center"><CheckCircle2 className="w-6 h-6 mb-1"/> <span className="text-[10px]">简单</span></div>
+              <div className="flex flex-col items-center"><RefreshCw className="w-6 h-6 mb-1"/> <span className="text-[10px]">掌握</span></div>
+              <div className="flex flex-col items-center"><XCircle className="w-6 h-6 mb-1"/> <span className="text-[10px]">重来</span></div>
             </div>
           </motion.div>
         </motion.div>

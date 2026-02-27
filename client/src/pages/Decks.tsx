@@ -28,21 +28,21 @@ export default function Decks() {
   return (
     <MobileLayout>
       <div className="px-6 pt-12 pb-6 sticky top-0 bg-background/90 backdrop-blur-xl z-10">
-        <h1 className="text-3xl font-bold font-display">My Decks</h1>
+        <h1 className="text-3xl font-bold font-display">我的卡组</h1>
         <div className="flex gap-3 mt-6">
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               <Button className="flex-1 rounded-xl" variant="default">
-                <Plus className="w-4 h-4 mr-2" /> New Deck
+                <Plus className="w-4 h-4 mr-2" /> 新建卡组
               </Button>
             </DialogTrigger>
             <DialogContent className="rounded-3xl sm:rounded-[2rem]">
               <DialogHeader>
-                <DialogTitle>Create New Deck</DialogTitle>
+                <DialogTitle>创建新卡组</DialogTitle>
               </DialogHeader>
               <div className="py-4">
                 <Input 
-                  placeholder="e.g. Spanish Vocabulary" 
+                  placeholder="例如：西班牙语词汇" 
                   value={newDeckName}
                   onChange={(e) => setNewDeckName(e.target.value)}
                   className="rounded-xl h-12 text-lg px-4"
@@ -50,7 +50,7 @@ export default function Decks() {
                 />
               </div>
               <Button onClick={handleCreate} disabled={createDeck.isPending} className="w-full rounded-xl h-12 text-lg">
-                {createDeck.isPending ? "Creating..." : "Create"}
+                {createDeck.isPending ? "创建中..." : "创建"}
               </Button>
             </DialogContent>
           </Dialog>
@@ -59,13 +59,13 @@ export default function Decks() {
 
       <div className="px-4 pb-4">
         {isLoading ? (
-          <div className="flex justify-center p-8 text-muted-foreground animate-pulse">Loading...</div>
+          <div className="flex justify-center p-8 text-muted-foreground animate-pulse">加载中...</div>
         ) : decks?.length === 0 ? (
           <div className="text-center p-12 text-muted-foreground">
             <div className="bg-secondary w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
               <Folder className="w-8 h-8 opacity-50" />
             </div>
-            <p>No decks yet. Create one to start learning!</p>
+            <p>还没有卡组。创建一个开始学习吧！</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -83,9 +83,9 @@ export default function Decks() {
                     <div className="block cursor-pointer pr-8">
                       <h3 className="font-semibold text-lg text-foreground truncate">{deck.name}</h3>
                       <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
-                        <span className="bg-secondary px-2 py-1 rounded-md">{deck.cardCount} cards</span>
+                        <span className="bg-secondary px-2 py-1 rounded-md">{deck.cardCount} 张卡片</span>
                         {deck.lastStudiedAt && (
-                          <span>Studied {formatDistanceToNow(new Date(deck.lastStudiedAt))} ago</span>
+                          <span>上次学习于 {formatDistanceToNow(new Date(deck.lastStudiedAt))} 前</span>
                         )}
                       </div>
                       
@@ -110,12 +110,12 @@ export default function Decks() {
                         <DropdownMenuItem 
                           className="text-destructive focus:text-destructive cursor-pointer"
                           onClick={() => {
-                            if(confirm("Are you sure you want to delete this deck?")) {
+                            if(confirm("确定要删除这个卡组吗？")) {
                               deleteDeck.mutate(deck.id);
                             }
                           }}
                         >
-                          <Trash2 className="w-4 h-4 mr-2" /> Delete Deck
+                          <Trash2 className="w-4 h-4 mr-2" /> 删除卡组
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

@@ -28,8 +28,8 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-10"
         >
-          <h1 className="text-3xl font-bold font-display">Dashboard</h1>
-          <p className="text-muted-foreground mt-1">Track your memory journey</p>
+          <h1 className="text-3xl font-bold font-display">仪表盘</h1>
+          <p className="text-muted-foreground mt-1">记录你的学习旅程</p>
         </motion.header>
 
         <div className="flex-1 flex flex-col items-center justify-center -mt-10">
@@ -41,7 +41,7 @@ export default function Home() {
             <ProgressRing 
               progress={progress} 
               label={`${progress}%`} 
-              subLabel="Mastered" 
+              subLabel="已掌握" 
             />
           </motion.div>
           
@@ -51,8 +51,8 @@ export default function Home() {
             transition={{ delay: 0.4 }}
             className="mt-8 text-center"
           >
-            <p className="text-muted-foreground mb-1">Total Cards: <span className="font-semibold text-foreground">{totalCards}</span></p>
-            <p className="text-muted-foreground">Today's Goal: <span className="font-semibold text-primary">0/50</span></p>
+            <p className="text-muted-foreground mb-1">卡片总数: <span className="font-semibold text-foreground">{totalCards}</span></p>
+            <p className="text-muted-foreground">今日目标: <span className="font-semibold text-primary">0/50</span></p>
           </motion.div>
         </div>
 
@@ -65,14 +65,14 @@ export default function Home() {
           {recentDeck && recentDeck.cardCount > 0 ? (
             <Link href={`/decks/${recentDeck.id}/study`}>
               <Button size="lg" className="w-full rounded-2xl h-14 text-lg font-semibold shadow-lg shadow-primary/25">
-                Continue Studying
+                继续学习
               </Button>
             </Link>
           ) : (
             <Link href="/decks">
               <Button size="lg" variant="secondary" className="w-full rounded-2xl h-14 text-lg font-semibold">
                 <BookOpen className="mr-2 w-5 h-5" />
-                Browse Decks
+                浏览卡组
               </Button>
             </Link>
           )}

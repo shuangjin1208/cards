@@ -54,8 +54,8 @@ export default function DeckDetails() {
     URL.revokeObjectURL(url);
   };
 
-  if (deckLoading) return <MobileLayout><div className="p-8 text-center">Loading...</div></MobileLayout>;
-  if (!deck) return <MobileLayout><div className="p-8 text-center text-destructive">Deck not found</div></MobileLayout>;
+  if (deckLoading) return <MobileLayout><div className="p-8 text-center">加载中...</div></MobileLayout>;
+  if (!deck) return <MobileLayout><div className="p-8 text-center text-destructive">未找到卡组</div></MobileLayout>;
 
   return (
     <MobileLayout>
@@ -70,18 +70,18 @@ export default function DeckDetails() {
           <div className="flex gap-2">
             <Dialog open={isImportOpen} onOpenChange={setIsImportOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm" className="rounded-full px-4"><Upload className="w-4 h-4 mr-2"/> Import</Button>
+                <Button variant="outline" size="sm" className="rounded-full px-4"><Upload className="w-4 h-4 mr-2"/> 导入</Button>
               </DialogTrigger>
               <DialogContent className="rounded-3xl">
-                <DialogHeader><DialogTitle>Import Cards</DialogTitle></DialogHeader>
-                <p className="text-xs text-muted-foreground mb-2">Paste text. Format: <br/><code>Front | Back</code> per line.</p>
+                <DialogHeader><DialogTitle>导入卡片</DialogTitle></DialogHeader>
+                <p className="text-xs text-muted-foreground mb-2">粘贴文本。格式：每行一个 <code>正面 | 背面</code>。</p>
                 <Textarea 
                   value={importText} 
                   onChange={e => setImportText(e.target.value)} 
                   className="h-48 rounded-xl"
-                  placeholder="Hola | Hello&#10;Gato | Cat"
+                  placeholder="Hola | 你好&#10;Gato | 猫"
                 />
-                <Button onClick={handleImport} disabled={importCards.isPending} className="rounded-xl h-12 mt-2">Import</Button>
+                <Button onClick={handleImport} disabled={importCards.isPending} className="rounded-xl h-12 mt-2">导入</Button>
               </DialogContent>
             </Dialog>
             <Button variant="outline" size="icon" className="rounded-full" onClick={handleExport}>
@@ -90,7 +90,7 @@ export default function DeckDetails() {
           </div>
         </div>
         <h1 className="text-2xl font-bold font-display truncate pr-4">{deck.name}</h1>
-        <p className="text-muted-foreground text-sm mt-1">{cards?.length || 0} cards</p>
+        <p className="text-muted-foreground text-sm mt-1">{cards?.length || 0} 张卡片</p>
       </div>
 
       {/* Main Action */}
@@ -98,7 +98,7 @@ export default function DeckDetails() {
         {cards && cards.length > 0 && (
           <Link href={`/decks/${deck.id}/study`}>
             <Button className="w-full h-14 rounded-2xl text-lg font-semibold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all">
-              <Play className="fill-current w-5 h-5 mr-2" /> Start Study
+              <Play className="fill-current w-5 h-5 mr-2" /> 开始学习
             </Button>
           </Link>
         )}
@@ -107,27 +107,27 @@ export default function DeckDetails() {
       {/* Cards List */}
       <div className="px-4 pb-24 space-y-3">
         <div className="flex items-center justify-between mt-4 mb-2">
-          <h2 className="text-lg font-semibold">Cards</h2>
+          <h2 className="text-lg font-semibold">卡片</h2>
           <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
             <DialogTrigger asChild>
               <Button size="sm" variant="ghost" className="text-primary rounded-full">
-                <Plus className="w-4 h-4 mr-1" /> Add
+                <Plus className="w-4 h-4 mr-1" /> 添加
               </Button>
             </DialogTrigger>
             <DialogContent className="rounded-3xl">
-              <DialogHeader><DialogTitle>New Card</DialogTitle></DialogHeader>
+              <DialogHeader><DialogTitle>新卡片</DialogTitle></DialogHeader>
               <div className="space-y-4 py-4">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Front</label>
+                  <label className="text-sm font-medium">正面</label>
                   <Textarea value={front} onChange={e => setFront(e.target.value)} className="rounded-xl resize-none" rows={3} autoFocus />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Back</label>
+                  <label className="text-sm font-medium">背面</label>
                   <Textarea value={back} onChange={e => setBack(e.target.value)} className="rounded-xl resize-none" rows={3} />
                 </div>
               </div>
               <Button onClick={handleAddCard} disabled={createCard.isPending} className="w-full rounded-xl h-12 text-lg">
-                Save Card
+                保存卡片
               </Button>
             </DialogContent>
           </Dialog>
@@ -139,8 +139,8 @@ export default function DeckDetails() {
           </div>
         ) : cards?.length === 0 ? (
           <div className="text-center p-8 bg-secondary/50 rounded-3xl border border-dashed border-border/50">
-            <p className="text-muted-foreground mb-4">This deck is empty.</p>
-            <Button onClick={() => setIsAddOpen(true)} variant="outline" className="rounded-full">Add your first card</Button>
+            <p className="text-muted-foreground mb-4">这个卡组是空的。</p>
+            <Button onClick={() => setIsAddOpen(true)} variant="outline" className="rounded-full">添加你的第一张卡片</Button>
           </div>
         ) : (
           cards?.map(card => (
@@ -154,7 +154,7 @@ export default function DeckDetails() {
                 size="icon" 
                 className="text-muted-foreground hover:text-destructive shrink-0 rounded-full"
                 onClick={() => {
-                  if(confirm("Delete this card?")) deleteCard.mutate({ id: card.id, deckId });
+                  if(confirm("确定删除这张卡片吗？")) deleteCard.mutate({ id: card.id, deckId });
                 }}
               >
                 <Trash2 className="w-4 h-4" />

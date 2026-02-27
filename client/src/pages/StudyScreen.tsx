@@ -34,7 +34,7 @@ export default function StudyScreen() {
 
     if (session && session.state) {
       const state = session.state as any;
-      if (confirm("Resume previous study session?")) {
+      if (confirm("是否恢复上次的学习进度？")) {
         setQueue(state.queue || []);
         setStats(state.stats || { easy: 0, good: 0, again: 0 });
         setInitialized(true);
@@ -104,7 +104,7 @@ export default function StudyScreen() {
     });
   };
 
-  if (!initialized) return <div className="h-screen flex items-center justify-center bg-background">Loading...</div>;
+  if (!initialized) return <div className="h-screen flex items-center justify-center bg-background">加载中...</div>;
 
   return (
     <div className="mobile-app-container bg-secondary/30">
@@ -114,7 +114,7 @@ export default function StudyScreen() {
           <X className="w-5 h-5" />
         </Button>
         <div className="font-medium text-sm text-muted-foreground bg-background/50 px-4 py-1.5 rounded-full backdrop-blur">
-          {queue.length} left
+          剩余 {queue.length} 张
         </div>
       </div>
 
@@ -142,26 +142,26 @@ export default function StudyScreen() {
               <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Trophy className="w-10 h-10 text-primary" />
               </div>
-              <h2 className="text-3xl font-bold font-display mb-2">Well Done!</h2>
-              <p className="text-muted-foreground mb-8">You've completed this session.</p>
+              <h2 className="text-3xl font-bold font-display mb-2">太棒了！</h2>
+              <p className="text-muted-foreground mb-8">你已经完成了本次学习。</p>
               
               <div className="grid grid-cols-3 gap-4 mb-8">
                 <div className="flex flex-col items-center">
                   <span className="text-2xl font-bold text-green-500">{stats.easy}</span>
-                  <span className="text-xs font-medium text-muted-foreground uppercase">Easy</span>
+                  <span className="text-xs font-medium text-muted-foreground uppercase">简单</span>
                 </div>
                 <div className="flex flex-col items-center">
                   <span className="text-2xl font-bold text-yellow-500">{stats.good}</span>
-                  <span className="text-xs font-medium text-muted-foreground uppercase">Good</span>
+                  <span className="text-xs font-medium text-muted-foreground uppercase">掌握</span>
                 </div>
                 <div className="flex flex-col items-center">
                   <span className="text-2xl font-bold text-red-500">{stats.again}</span>
-                  <span className="text-xs font-medium text-muted-foreground uppercase">Again</span>
+                  <span className="text-xs font-medium text-muted-foreground uppercase">重来</span>
                 </div>
               </div>
 
               <Button onClick={() => setLocation(`/decks/${deckId}`)} className="w-full h-14 rounded-2xl text-lg">
-                Finish
+                完成
               </Button>
             </motion.div>
           )}

@@ -4,19 +4,11 @@
     "slug": "rest-express",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./client/src/assets/logo.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
     "android": {
-      "adaptiveIcon": {
-        "backgroundColor": "#ffffff"
-      },
       "package": "com.kakak"
     },
     "extra": {

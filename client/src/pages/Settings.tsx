@@ -178,6 +178,11 @@ export default function Settings() {
                   <p className="text-sm text-muted-foreground">简约 iOS 风格 v1.0</p>
                 </div>
               </div>
+              <div className="px-3 pb-3">
+                <p className="text-[10px] text-muted-foreground/20 text-right select-none">
+                  shimokin1208
+                </p>
+              </div>
             </div>
           </section>
         </div>

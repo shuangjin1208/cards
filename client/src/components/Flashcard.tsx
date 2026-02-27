@@ -35,35 +35,40 @@ export function Flashcard({ card, onSwipe }: FlashcardProps) {
 
   const handleDragEnd = async (e: any, info: PanInfo) => {
     const threshold = 100;
+    const velocityThreshold = 500;
     
-    if (info.offset.x < -threshold) {
-      // Swipe Left -> Easy
-      await controls.start({ x: -500, opacity: 0, transition: { duration: 0.3 } });
+    if (info.offset.x < -threshold || info.velocity.x < -velocityThreshold) {
+      // Swipe Left -> Easy (简单)
+      if (window.navigator.vibrate) window.navigator.vibrate(10);
+      await controls.start({ x: -500, opacity: 0, transition: { duration: 0.2, ease: "easeOut" } });
       onSwipe("left", card);
-    } else if (info.offset.x > threshold) {
-      // Swipe Right -> Again
-      await controls.start({ x: 500, opacity: 0, transition: { duration: 0.3 } });
+    } else if (info.offset.x > threshold || info.velocity.x > velocityThreshold) {
+      // Swipe Right -> Again (重来)
+      if (window.navigator.vibrate) window.navigator.vibrate(10);
+      await controls.start({ x: 500, opacity: 0, transition: { duration: 0.2, ease: "easeOut" } });
       onSwipe("right", card);
-    } else if (info.offset.y < -threshold) {
-      // Swipe Up -> Good
-      await controls.start({ y: -500, opacity: 0, transition: { duration: 0.3 } });
+    } else if (info.offset.y < -threshold || info.velocity.y < -velocityThreshold) {
+      // Swipe Up -> Good (掌握)
+      if (window.navigator.vibrate) window.navigator.vibrate(15);
+      await controls.start({ y: -500, opacity: 0, transition: { duration: 0.2, ease: "easeOut" } });
       onSwipe("up", card);
     } else {
       // Return to center
-      controls.start({ x: 0, y: 0, transition: { type: "spring", stiffness: 300, damping: 20 } });
+      controls.start({ x: 0, y: 0, transition: { type: "spring", stiffness: 400, damping: 25 } });
     }
   };
 
   return (
     <div className="relative w-[90vw] max-w-[500px] h-[70vh] max-h-[700px] perspective-1000 mx-auto">
       <motion.div
-        className="w-full h-full transform-style-3d cursor-grab active:cursor-grabbing"
+        className="w-full h-full transform-style-3d cursor-grab active:cursor-grabbing touch-none"
         drag={isFlipped ? true : false}
         dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
         dragElastic={0.8}
         onDragEnd={handleDragEnd}
         style={{ x, y, rotate, opacity }}
         animate={controls}
+        whileTap={{ scale: 0.98 }}
       >
         <motion.div
           animate={{ rotateY: isFlipped ? 180 : 0 }}

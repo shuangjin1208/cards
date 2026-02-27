@@ -127,7 +127,7 @@ export default function StudyScreen() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 1.05, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="absolute inset-0 flex items-center justify-center px-4 sm:px-6 pb-12"
+              className="absolute inset-0 flex items-center justify-center px-4 sm:px-6 pb-24"
             >
               <Flashcard card={queue[0]} onSwipe={handleSwipe} />
             </motion.div>

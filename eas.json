@@ -16,8 +16,7 @@
     },
     "production": {
       "autoIncrement": true,
-      "node": "20.19.4",
-      "image": "ubuntu-22.04-jdk-17-ndk-r26b"
+      "node": "20.19.4"
     }
   }
 }

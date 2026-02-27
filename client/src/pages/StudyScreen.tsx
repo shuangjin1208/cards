@@ -81,10 +81,11 @@ export default function StudyScreen() {
     if (direction === "left") {
       // "Easy" - normal next card
       completeCard(direction, card);
-    } else {
+    } else if (direction === "right" || direction === "up") {
       // "Again" (right) or "Good/Blurry" (up) - trigger AI
       setAiActive(true);
       setMessages([]);
+      // We don't call completeCard yet, we wait for AI interaction or "Next" button
     }
   };
 

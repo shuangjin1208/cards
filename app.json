@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "41abc447-075b-459b-9fd9-592ba96ba3ba"
+      }
+    },
+    "android": {
+      "package": "com.kakak"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/41abc447-075b-459b-9fd9-592ba96ba3ba"
+    },
+    "ios": {}
+  }
+}

@@ -42,11 +42,14 @@ export function Flashcard({ card, onSwipe }: FlashcardProps) {
   );
 
   const handleDragEnd = async (e: any, info: PanInfo) => {
-    const threshold = 80; // 降低阈值，更容易触发
-    const velocityThreshold = 300; // 降低速度阈值
+    const threshold = 50; // Further reduced threshold for easier triggering
+    const velocityThreshold = 200; // Further reduced velocity threshold
     
-    // 优先判断水平滑动
-    if (Math.abs(info.offset.x) > Math.abs(info.offset.y)) {
+    // Calculate which direction is dominant
+    const isHorizontal = Math.abs(info.offset.x) > Math.abs(info.offset.y);
+    
+    if (isHorizontal) {
+      // Horizontal swipes (Left/Right)
       if (info.offset.x < -threshold || info.velocity.x < -velocityThreshold) {
         // Swipe Left -> Easy (简单)
         if (window.navigator.vibrate) window.navigator.vibrate(10);
@@ -56,23 +59,25 @@ export function Flashcard({ card, onSwipe }: FlashcardProps) {
       } else if (info.offset.x > threshold || info.velocity.x > velocityThreshold) {
         // Swipe Right -> Again (重来)
         if (window.navigator.vibrate) window.navigator.vibrate(10);
-        setIsFlipped(true);
+        // Animate out to the right
+        await controls.start({ x: 500, opacity: 0, transition: { duration: 0.2, ease: "easeOut" } });
         onSwipe("right", card);
         return;
       }
     } else {
-      // 判断垂直滑动
+      // Vertical swipes (Up/Down)
       if (info.offset.y < -threshold || info.velocity.y < -velocityThreshold) {
         // Swipe Up -> Good (掌握)
         if (window.navigator.vibrate) window.navigator.vibrate(15);
-        setIsFlipped(true);
+        // Animate out upwards
+        await controls.start({ y: -500, opacity: 0, transition: { duration: 0.2, ease: "easeOut" } });
         onSwipe("up", card);
         return;
       }
     }
 
-    // 未达阈值，回归中心
-    controls.start({ x: 0, y: 0, transition: { type: "spring", stiffness: 400, damping: 25 } });
+    // Reset if thresholds not met
+    controls.start({ x: 0, y: 0, transition: { type: "spring", stiffness: 500, damping: 30 } });
   };
 
   return (

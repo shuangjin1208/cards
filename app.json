@@ -9,7 +9,8 @@
       "**/*"
     ],
     "android": {
-      "package": "com.kakak"
+      "package": "com.kakak",
+      "versionCode": 1
     },
     "extra": {
       "eas": {

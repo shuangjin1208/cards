@@ -24,11 +24,11 @@
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/ae1c38f7-8bc7-4804-900b-218c0d070e4f"   // ← 这里改成新 ID
+      "url": "https://u.expo.dev/ae1c38f7-8bc7-4804-900b-218c0d070e4f"  
     },
     "extra": {
       "eas": {
-        "projectId": "ae1c38f7-8bc7-4804-900b-218c0d070e4f"   // ← 这里改成新 ID
+        "projectId": "ae1c38f7-8bc7-4804-900b-218c0d070e4f"  
       }
     }
   }

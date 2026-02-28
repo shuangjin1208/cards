@@ -53,6 +53,7 @@
     "drizzle-zod": "^0.7.0",
     "embla-carousel-react": "^8.6.0",
     "expo": "^52.0.0",
+    "expo-dev-client": "~5.0.20",
     "expo-status-bar": "~2.0.0",
     "expo-updates": "^0.26.19",
     "express": "^5.0.1",
